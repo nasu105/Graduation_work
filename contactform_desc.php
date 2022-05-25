@@ -1,21 +1,12 @@
 <?php
-
-// 各種項目設定
-$dbn ='mysql:dbname=卒業制作;charset=utf8mb4;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
-
+include('function.php');
 // DB接続
-try {
-  $pdo = new PDO($dbn, $user, $pwd);
-} catch (PDOException $e) {
-  echo json_encode(["db error" => "{$e->getMessage()}"]);
-  exit();
-}
+$pdo = connect_to_db();
+
 // 「dbError:...」が表示されたらdb接続でエラーが発生していることがわかる
 
-// SQL作成&実行
-$sql = 'SELECT * FROM Contact_form';
+// SQL作成&実行(昇順に並び替え)
+$sql = 'SELECT * FROM Contact_form ORDER BY created_at DESC';
 $stmt = $pdo->prepare($sql);
 
 // SQL実行（実行に失敗すると `sql error ...` が出力される）
@@ -51,16 +42,6 @@ try {
       </td>
     </tr>";
   }
-  /* 降順、昇順の作成 */
-  // SQL文の作成
-/*   $sql_ask = 'SELECT * FROM Contactform ORDER BY created_at ASC';
-  $sql_desc = 'SELECT * FROM Contactform ORDER BY created_at DESC';
-  // SQL文の実行
-  $stmt_ask = $dbn->query($sql_ask);
-  $stmt_desc = $dbn->query($sql_desc);
-  // fetchメソッドを呼び出してクエリの実行結果を取得する
-  $result_ask = $stmt_ask->fetchAll(PDO::FETCH_COLUMN);
-  $result_desc = $stmt_desc->fetchAll(PDO::FETCH_COLUMN); */
 } catch (PDOException $e) {
   echo json_encode(["sql error" => "{$e->getMessage()}"]);
   exit();
@@ -68,7 +49,6 @@ try {
 
 // var_dump($str);
 // exit();
-
 
 /* // 降順が指定されているか判定
 if (isset($_POST['sort']) && $_POST['sort'] == 'desc') {
@@ -92,15 +72,13 @@ run(); */
 </head>
 <body>
   <div>
-    
+    <a href="contactform_read.php">ユーザーリスト(一覧)</a>
   </div>
+  <div>
+    <a href="contactform_ask.php">作成日(降順)</a>
+  </div>
+  
   <table border='1' class="admin_display">
-    <div>
-      <a href="contactform_ask.php">作成日(降順)</a>
-    </div>
-    <div>
-      <a href="contactform_desc.php">作成日(昇順)</a>
-    </div>
     <tr>
       <th>会社名</th>
       <th>所属部署</th>

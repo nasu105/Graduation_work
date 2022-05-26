@@ -35,10 +35,10 @@ try {
       <td>{$record['comment']}</td>
       <td>{$record['created_at']}</td>
       <td>
-        <a harf='contactform_edit.php?id={$record["id"]}'>edit</a>
+        <a href='contactform_edit.php?id={$record["id"]}'>edit</a>
       </td>
       <td>
-        <a harf='contactform_delete.php?id={$record["id"]}'>delete</a>
+        <a href='contactform_delete.php?id={$record["id"]}'>delete</a>
       </td>
     </tr>";
   }

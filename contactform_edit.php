@@ -1,6 +1,8 @@
 <?php
 
 // DBを繋ぐ
+// var_dump($_GET);
+// exit();
 include('function.php');
 $pdo = connect_to_db();
 
@@ -15,6 +17,8 @@ $sql = 'SELECT * FROM Contact_form WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
+
+
 try {
   $status = $stmt->execute();
   $record = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,6 +28,19 @@ try {
   echo json_encode(["sql error" => "{$e->getMessage()}"]);
   exit();
 }
+
+// 都道府県名を数値に変える変数
+$chang_japan = chang_japan47($record['administrative_divisions']);
+// var_dump($chang_japan);
+// exit();
+
+// javascriptに値を送るためjson_encodeを行う
+$js_chang_japan = json_encode($chang_japan);
+// var_dump($js_chang_japan);
+// exit();
+
+// 都道府県判定
+// if (preg_match("/$chang_japan/", $record['adminst']))
 
 
 ?>
@@ -37,6 +54,7 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="contactform_edit.css">
   <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <title>ユーザー編集画面</title>
 </head>
 
@@ -53,7 +71,7 @@ try {
         <div class=" h-adr">
           <span class="p-country-name" style="display:none;">Japan</span>
           <label for="postal_code">郵便番号:</label><br>〒<input type="text" class="p-postal-code" id="postal_code" name="postal_code" size="8" maxlength="8" value="<?= $record['postal_code'] ?>"><br>
-          <label for="administrative_divisions">都道府県:</label><br><select id="administrative_divisions" name="administrative_divisions" class="p-region-id" value="<?= $record['administrative_divisions'] ?>">
+          <label for="administrative_divisions">都道府県:</label><br><select id="administrative_divisions" name="administrative_divisions" class="p-region-id" >
             <option value="">--</option>
             <option value="1">北海道</option>
             <option value="2">青森県</option>
@@ -118,6 +136,12 @@ try {
         </div>
       </div>
   </form>
+  <script>
+    /*  外部スクリプトへ値を渡すA */
+    var japan_select = JSON.parse('<?php echo $js_chang_japan; ?>');
+  </script>
+  <!-- 外部のjavascriptを読み込んでいく -->
+  <script src="contactform_edit.js"></script>
 
 </body>
 

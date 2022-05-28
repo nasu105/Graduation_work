@@ -1,7 +1,7 @@
 <?php
 
 // 各種項目設定
-$dbn ='mysql:dbname=卒業制作;charset=utf8mb4;port=3306;host=localhost';
+$dbn = 'mysql:dbname=卒業制作;charset=utf8mb4;port=3306;host=localhost';
 $user = 'root';
 $pwd = '';
 
@@ -17,6 +17,11 @@ try {
 // SQL作成&実行
 $sql = 'SELECT * FROM Contact_form';
 $stmt = $pdo->prepare($sql);
+// SQL作成降順
+$sql_ask = 'SELECT * FROM Contact_form ORDER BY created_at ASC';
+// SQL作成昇順
+$sql_ask = 'SELECT * FROM Contact_form ORDER BY created_at DESC';
+
 
 // SQL実行（実行に失敗すると `sql error ...` が出力される）
 try {
@@ -27,7 +32,7 @@ try {
   // echo '</pre>';
   // exit();
   $str = '';
-  foreach ($result as $record){
+  foreach ($result as $record) {
     $str .= "
     <tr>
       <td>{$record['company_name']}</td>
@@ -53,7 +58,7 @@ try {
   }
   /* 降順、昇順の作成 */
   // SQL文の作成
-/*   $sql_ask = 'SELECT * FROM Contactform ORDER BY created_at ASC';
+  /*   $sql_ask = 'SELECT * FROM Contactform ORDER BY created_at ASC';
   $sql_desc = 'SELECT * FROM Contactform ORDER BY created_at DESC';
   // SQL文の実行
   $stmt_ask = $dbn->query($sql_ask);
@@ -83,6 +88,7 @@ run(); */
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -90,15 +96,18 @@ run(); */
   <link rel="stylesheet" href="contactform_read.css">
   <title>管理者画面</title>
 </head>
+
 <body>
   <div>
-    
+
   </div>
   <table border='1' class="admin_display">
     <div>
+      <input type="submit" value="作成日降順">
       <a href="contactform_ask.php">作成日(降順)</a>
     </div>
     <div>
+      <input type="submit" value="作成日昇順">
       <a href="contactform_desc.php">作成日(昇順)</a>
     </div>
     <tr>
@@ -122,7 +131,8 @@ run(); */
       <!-- ここにデータが入る -->
       <?= $str ?>
     </tobody>
-</table>
-  
+  </table>
+
 </body>
+
 </html>

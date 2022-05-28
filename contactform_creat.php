@@ -1,5 +1,5 @@
 <?php
-
+include('function.php');
 // var_dump($_POST);
 // exit();
 
@@ -51,13 +51,18 @@ $sql = 'INSERT INTO Contact_form (id, company_name, Department, industry, use_bi
 
 $stmt = $pdo->prepare($sql);
 
+// 都道府県valueを変換
+$japan = japan47($_POST['administrative_divisions']);
+// var_dump($japan);
+// exit();
+
 // バインド変数を設定
 $stmt->bindValue(':company_name', $company_name, PDO::PARAM_STR);
 $stmt->bindValue(':Department', $Department, PDO::PARAM_STR);
 $stmt->bindValue(':industry', $industry, PDO::PARAM_STR);
 $stmt->bindValue(':use_bim', $use_bim, PDO::PARAM_STR);
 $stmt->bindValue(':postal_code', $postal_code, PDO::PARAM_STR);
-$stmt->bindValue(':administrative_divisions', $administrative_divisions, PDO::PARAM_STR);
+$stmt->bindValue(':administrative_divisions', $japan, PDO::PARAM_STR);
 $stmt->bindValue(':address', $address, PDO::PARAM_STR);
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->bindValue(':e_mail', $e_mail, PDO::PARAM_STR);

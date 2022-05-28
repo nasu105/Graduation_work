@@ -1,5 +1,6 @@
 <?php
-
+// var_dump($_POST['administrative_divisions']);
+// exit();
 // var_dump($_POST);
 // exit();
 include('function.php');
@@ -43,13 +44,16 @@ $sql = 'UPDATE Contact_form SET company_name=:company_name, Department=:Departme
 
 $stmt = $pdo->prepare($sql);
 
+// 数字を都道府県名に変える
+$japan = japan47($_POST['administrative_divisions']);
+
 // バインド変数を設定
 $stmt->bindValue(':company_name', $company_name, PDO::PARAM_STR);
 $stmt->bindValue(':Department', $Department, PDO::PARAM_STR);
 $stmt->bindValue(':industry', $industry, PDO::PARAM_STR);
 $stmt->bindValue(':use_bim', $use_bim, PDO::PARAM_STR);
 $stmt->bindValue(':postal_code', $postal_code, PDO::PARAM_STR);
-$stmt->bindValue(':administrative_divisions', $administrative_divisions, PDO::PARAM_STR);
+$stmt->bindValue(':administrative_divisions', $japan, PDO::PARAM_STR);
 $stmt->bindValue(':address', $address, PDO::PARAM_STR);
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->bindValue(':e_mail', $e_mail, PDO::PARAM_STR);

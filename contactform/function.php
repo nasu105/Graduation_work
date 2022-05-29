@@ -26,6 +26,17 @@ function connect_to_db()
   }
 }
 
+// ログインの有無を確認する関数
+function chek_session_id() {
+  if (!isset($_SESSION['session_id']) || $_SESSION['session_id'] != session_id()) {
+    header('Location:login.php');
+  } else {
+    session_regenerate_id(true);
+    $_SESSION['session_id'] = session_id();
+  }
+}
+
+
 // 都道府県変換
 function japan47($administrative_divisions)
 {

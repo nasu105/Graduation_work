@@ -1,8 +1,13 @@
 <?php
-include('function.php');
+// var_dump($_POST['administrative_divisions']);
+// exit();
 // var_dump($_POST);
 // exit();
+include('function.php');
+session_start();
+chek_session_id();
 
+// 必死入力項目取れているかのチェック
 if (
   !isset($_POST['company_name']) || $_POST['company_name'] == '' ||
   !isset($_POST['Department']) || $_POST['Department'] == '' ||
@@ -14,7 +19,7 @@ if (
   !isset($_POST['name']) || $_POST['name'] == '' ||
   !isset($_POST['e_mail']) || $_POST['e_mail'] == '' ||
   !isset($_POST['TEL']) || $_POST['TEL'] == '' ||
-  !isset($_POST['FAX']) || $_POST['FAX'] == '' 
+  !isset($_POST['FAX']) || $_POST['FAX'] == ''
 ) {
   exit('paramErrow');
 };
@@ -28,33 +33,21 @@ $administrative_divisions = $_POST['administrative_divisions'];
 $address = $_POST['address'];
 $name = $_POST['name'];
 $e_mail = $_POST['e_mail'];
-$TEL = $_POST ['TEL'];
+$TEL = $_POST['TEL'];
 $FAX = $_POST['FAX'];
 $comment = $_POST['comment'];
-
-// 各種項目設定
-$dbn ='mysql:dbname=卒業制作;charset=utf8mb4;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
+$id = $_POST['id'];
 
 // DB接続
-try {
-  $pdo = new PDO($dbn, $user, $pwd);
-} catch (PDOException $e) {
-  echo json_encode(["db error" => "{$e->getMessage()}"]);
-  exit();
-}
-// 「dbError:...」が表示されたらdb接続でエラーが発生していることがわかる
+$pdo = connect_to_db();
 
-// SQL作成&実行
-$sql = 'INSERT INTO Contact_form (id, company_name, Department, industry, use_bim, postal_code, administrative_divisions, address, name, e_mail, TEL, FAX, comment, created_at) VALUES (NULL,:company_name, :Department, :industry, :use_bim, :postal_code, :administrative_divisions, :address, :name, :e_mail, :TEL, :FAX, :comment, now());';
+/* -------------------------SQL作成及び実行----------------------------- */
+$sql = 'UPDATE Contact_form SET company_name=:company_name, Department=:Department, industry=:industry, use_bim=:use_bim, postal_code=:postal_code, administrative_divisions=:administrative_divisions, address =:address, name = :name, e_mail = :e_mail, TEL = :TEL, FAX = :FAX, comment = :comment WHERE id = :id';
 
 $stmt = $pdo->prepare($sql);
 
-// 都道府県valueを変換
+// 数字を都道府県名に変える
 $japan = japan47($_POST['administrative_divisions']);
-// var_dump($japan);
-// exit();
 
 // バインド変数を設定
 $stmt->bindValue(':company_name', $company_name, PDO::PARAM_STR);
@@ -69,6 +62,7 @@ $stmt->bindValue(':e_mail', $e_mail, PDO::PARAM_STR);
 $stmt->bindValue(':TEL', $TEL, PDO::PARAM_STR);
 $stmt->bindValue(':FAX', $FAX, PDO::PARAM_STR);
 $stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
+$stmt->bindValue(':id', $id, PDO::PARAM_STR);
 
 // SQL実行（実行に失敗すると `sql error ...` が出力される）
 try {
@@ -78,9 +72,7 @@ try {
   exit();
 }
 
-// SQL実行の処理
-
-header('Location:contactform_input.php');
+header("Location:contactform_read.php");
 exit();
 
 ?>

@@ -4,6 +4,9 @@
 // var_dump($_GET);
 // exit();
 include('function.php');
+session_start();
+chek_session_id();
+
 $pdo = connect_to_db();
 
 // ID受け取り

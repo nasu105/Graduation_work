@@ -1,0 +1,28 @@
+.admin_display {
+  width: 2000px;
+  border: 1;
+}
+
+.tablesorter-headerUnSorted {
+  background-image: url('img/sort.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+.tablesorter-headerAsc {
+  background-image: url('img/sort_a.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+  border-bottom: #000 2px solid;
+}
+
+.tablesorter-headerDesc {
+  background-image: url('img/sort_d.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+  border-bottom: #000 2px solid;
+}
+
+.sorter-false {
+  background-image: none;
+}

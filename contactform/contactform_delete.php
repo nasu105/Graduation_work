@@ -2,11 +2,13 @@
 
 // var_dump($_GET);
 // exit();
+include('function.php');
+session_start();
+chek_session_id();
 
 $id = $_GET['id'];
 
 // DBに繋ぐ
-include('function.php');
 $pdo = connect_to_db();
 
 // SQL作成及び実行

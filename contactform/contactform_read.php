@@ -1,5 +1,9 @@
 <?php
 
+include('function.php');
+session_start();
+chek_session_id();
+
 // 各種項目設定
 $dbn = 'mysql:dbname=卒業制作;charset=utf8mb4;port=3306;host=localhost';
 $user = 'root';
@@ -49,23 +53,13 @@ try {
       <td>{$record['comment']}</td>
       <td>{$record['created_at']}</td>
       <td>
-        <a href='contactform_edit.php?id={$record["id"]}'>edit</a>
+        <a href='contactform_edit.php?id={$record["id"]}' id='edit'>edit</a>
       </td>
       <td>
         <a href='contactform_delete.php?id={$record["id"]}'>delete</a>
       </td>
     </tr>";
   }
-  /* 降順、昇順の作成 */
-  // SQL文の作成
-  /*   $sql_ask = 'SELECT * FROM Contactform ORDER BY created_at ASC';
-  $sql_desc = 'SELECT * FROM Contactform ORDER BY created_at DESC';
-  // SQL文の実行
-  $stmt_ask = $dbn->query($sql_ask);
-  $stmt_desc = $dbn->query($sql_desc);
-  // fetchメソッドを呼び出してクエリの実行結果を取得する
-  $result_ask = $stmt_ask->fetchAll(PDO::FETCH_COLUMN);
-  $result_desc = $stmt_desc->fetchAll(PDO::FETCH_COLUMN); */
 } catch (PDOException $e) {
   echo json_encode(["sql error" => "{$e->getMessage()}"]);
   exit();
@@ -73,17 +67,6 @@ try {
 
 // var_dump($str);
 // exit();
-
-
-/* // 降順が指定されているか判定
-if (isset($_POST['sort']) && $_POST['sort'] == 'desc') {
-  // 降順に並び替えるSQL文に変更
-  $que = $que . ' DESC';
-}
-
-// 外部ファイルの読み込み
-require('./tips.php');
-run(); */
 ?>
 
 <!DOCTYPE html>
@@ -94,45 +77,46 @@ run(); */
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="contactform_read.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/js/jquery.tablesorter.min.js"></script>
   <title>管理者画面</title>
+  <script src="contactform_read.js"></script>
 </head>
+
 
 <body>
   <div>
-
+    <a href="../admin_display.php">Top</a>
+    <a href="logout.php">Logout</a>
   </div>
-  <table border='1' class="admin_display">
-    <div>
-      <input type="submit" value="作成日降順">
-      <a href="contactform_ask.php">作成日(降順)</a>
-    </div>
-    <div>
-      <input type="submit" value="作成日昇順">
-      <a href="contactform_desc.php">作成日(昇順)</a>
-    </div>
-    <tr>
-      <th>会社名</th>
-      <th>所属部署</th>
-      <th>業種</th>
-      <th>使用中の建築ソフト</th>
-      <th>郵便番号</th>
-      <th>都道府県</th>
-      <th>住所</th>
-      <th>名前</th>
-      <th>Email</th>
-      <th>TEL</th>
-      <th>FAX</th>
-      <th>ご要望</th>
-      <th>送信日時</th>
-      <th>編集</th>
-      <th>削除</th>
-    </tr>
-    <tobody>
-      <!-- ここにデータが入る -->
-      <?= $str ?>
-    </tobody>
-  </table>
-
+  <div>
+    
+    <table border='1' class="admin_display" id="admin_display">
+      <thead>
+        <tr>
+          <th id="conpany">会社名</th>
+          <th>所属部署</th>
+          <th>業種</th>
+          <th>使用中の建築ソフト</th>
+          <th>郵便番号</th>
+          <th>都道府県</th>
+          <th>住所</th>
+          <th>名前</th>
+          <th>Email</th>
+          <th>TEL</th>
+          <th>FAX</th>
+          <th>ご要望</th>
+          <th>送信日時</th>
+          <th>編集</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tobody>
+        <!-- ここにデータが入る -->
+        <?= $str ?>
+      </tobody>
+    </table>
+  </div>
 </body>
 
 </html>

@@ -1,16 +1,21 @@
 <?php
 
+// var_dump($_POST);
+// exit();
 include('function.php');
 session_start();
 check_session_id();
 
-// DB接続
-$pdo = connect_to_db(); // 「dbError:...」が表示されたらdb接続でエラーが発生していることがわかる
+// DBを繋ぐ
+$pdo = connect_to_db();
 
-// SQL作成&実行
-$sql = 'SELECT * FROM Contact_form WHERE support = 0';
+$sql = "SELECT * FROM Contact_form WHERE company_name = '" . $_POST["searching"] . "' OR
+use_bim = '" . $_POST["searching"] . "' OR
+Department = '" . $_POST["searching"] . "' OR
+industry = '" . $_POST["searching"] . "' OR
+administrative_divisions = '" . $_POST["searching"] . "' OR
+name = '" . $_POST["searching"] . "'";
 $stmt = $pdo->prepare($sql);
-
 
 // SQL実行（実行に失敗すると `sql error ...` が出力される）
 try {
@@ -22,42 +27,41 @@ try {
   // exit();
   $str = '';
   foreach ($result as $record) {
-    $str .= "
-    <form class='admin_table' id='admin_table'>
-      <tr>
-        <td>{$record['company_name']}</td>
-        <td>{$record['Department']}</td>
-        <td>{$record['industry']}</td>
-        <td>{$record['use_bim']}</td>
-        <td>{$record['postal_code']}</td>
-        <td>{$record['administrative_divisions']}</td>
-        <td>{$record['address']}</td>
-        <td>{$record['name']}</td>
-        <td>{$record['e_mail']}</td>
-        <td>{$record['TEL']}</td>
-        <td>{$record['FAX']}</td>
-        <td>{$record['comment']}</td>
-        <td>{$record['created_at']}</td>
-        <td>
-          <a href='contactform_edit.php?id={$record["id"]}' id='edit'>edit</a>
-        </td>
-        <td>
-          <a href='contactform_delete.php?id={$record["id"]}'>delete</a>
-        </td>
-        <td>
-          <a href='contactform_support_update.php?id={$record["id"]}'>completion</a>
-        </td>
-      </tr>
-    </form>";
+  $str .= "
+  <form class='admin_table' id='admin_table'>
+    <tr>
+      <td>{$record['company_name']}</td>
+      <td>{$record['Department']}</td>
+      <td>{$record['industry']}</td>
+      <td>{$record['use_bim']}</td>
+      <td>{$record['postal_code']}</td>
+      <td>{$record['administrative_divisions']}</td>
+      <td>{$record['address']}</td>
+      <td>{$record['name']}</td>
+      <td>{$record['e_mail']}</td>
+      <td>{$record['TEL']}</td>
+      <td>{$record['FAX']}</td>
+      <td>{$record['comment']}</td>
+      <td>{$record['created_at']}</td>
+      <td>
+        <a href='contactform_edit.php?id={$record["id"]}' id='edit'>edit</a>
+      </td>
+      <td>
+        <a href='contactform_delete.php?id={$record["id"]}'>delete</a>
+      </td>
+      <td>
+        <a href='contactform_support_update.php?id={$record["id"]}'>completion</a>
+      </td>
+    </tr>
+  </form>";
   }
 } catch (PDOException $e) {
   echo json_encode(["sql error" => "{$e->getMessage()}"]);
   exit();
 }
 
-// var_dump($str);
-// exit();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -81,6 +85,7 @@ try {
 
 <body>
   <div>
+    <a href="contactform_read.php">back</a>
     <a href="contactform_read_supported.php">Supported list</a>
     <a href="logout.php">Logout</a>
     <a href="../admin_display.php">Top</a>

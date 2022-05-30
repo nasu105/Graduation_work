@@ -5,7 +5,7 @@
 // exit();
 include('function.php');
 session_start();
-chek_session_id();
+check_session_id();
 
 $pdo = connect_to_db();
 

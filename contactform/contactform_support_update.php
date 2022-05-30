@@ -2,29 +2,35 @@
 
 // var_dump($_GET);
 // exit();
+
 include('function.php');
 session_start();
 check_session_id();
 
 $id = $_GET['id'];
+// var_dump($id);
+// exit();
 
-// DBに繋ぐ
+// DBを繋ぐ
 $pdo = connect_to_db();
 
-// SQL作成及び実行
-$sql = 'DELETE FROM Contact_form WHERE id=:id';
+//sql作成及び実行
+$sql = 'UPDATE Contact_form SET support = 1 WHERE id = :id';
 
 $stmt = $pdo->prepare($sql);
+
+// バインド変数を設定
 $stmt->bindValue(':id', $id, PDO::PARAM_STR);
 
-try{
+// sql実行
+try {
   $status = $stmt->execute();
 } catch (PDOException $e) {
-  echo json_encode(["sql error"  => "{$e->getMessage()}"]);
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
 }
 
-header("Location:contactform_read.php");
+header('Location:contactform_read.php');
 exit();
-
 
 ?>

@@ -8,7 +8,7 @@ check_session_id();
 $pdo = connect_to_db(); // 「dbError:...」が表示されたらdb接続でエラーが発生していることがわかる
 
 // SQL作成&実行
-$sql = 'SELECT * FROM Contact_form WHERE support = 0';
+$sql = 'SELECT * FROM Contact_form WHERE support = 1';
 $stmt = $pdo->prepare($sql);
 
 
@@ -44,9 +44,6 @@ try {
         <td>
           <a href='contactform_delete.php?id={$record["id"]}'>delete</a>
         </td>
-        <td>
-          <a href='contactform_support_update.php?id={$record["id"]}'>completion</a>
-        </td>
       </tr>
     </form>";
   }
@@ -81,15 +78,11 @@ try {
 
 <body>
   <div>
-    <a href="contactform_read_supported.php">Supported list</a>
+    <a href="contactform_read.php">contact list</a>
     <a href="logout.php">Logout</a>
     <a href="../admin_display.php">Top</a>
-    <p>問い合わせリスト(サポート未対応)</p>
+    <p>サポート済リスト</p>
   </div>
-  <form action="contactform_search.php" method="POST">
-    <input type="text" name='searching'>
-    <button>検索</button>
-  </form>
   <div>
     <table border='1' class="admin_display" id="admin_display">
       <thead>
@@ -109,7 +102,6 @@ try {
           <th>送信日時</th>
           <th>編集</th>
           <th>削除</th>
-          <th>サポート</th>
         </tr>
       </thead>
       <tobody>

@@ -2,7 +2,7 @@
 
 include('function.php');
 session_start();
-chek_session_id();
+check_session_id();
 
 // 管理者かどうか判定
 function show_is_admin($number)
@@ -31,7 +31,7 @@ $role = show_is_admin($_SESSION['is_admin']);
     <p>追加コンテン乞うご期待</p>
   </div>
   <div>
-    <a href="login.php">Top</a>
+    <!-- <a href="login.php" type="hidden">Top</a> -->
     <a href="logout.php">Log out</a>
   </div>
 

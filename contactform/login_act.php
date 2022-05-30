@@ -35,13 +35,15 @@ $val = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$val) {
   echo "<p>ログイン情報に誤りがあります</p>";
   echo "<a href='login.php'>ログイン</a>";
-} else if ($val['is_admin'] == 1) {
+  //管理者IDで入った時
+} else if ($val && $val['is_admin'] == 1) {
   $_SESSION = array();
   $_SESSION['session_id'] = session_id();
   $_SESSION['is_admin'] = $val['is_admin'];
   $_SESSION['username'] = $val['username'];
   header('Location:../admin_display.php');
-} else {
+  // ユーザIDで入った時
+} else  if ($val && $val['is_admin'] == 0){
   $_SESSION = array();
   $_SESSION['session_id'] = session_id();
   $_SESSION['is_admin'] = $val['is_admin'];

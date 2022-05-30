@@ -1,7 +1,7 @@
 <?php
 include('function.php');
 session_start();
-chek_session_id();
+check_session_id();
 
 // DB接続
 $pdo = connect_to_db();
@@ -20,11 +20,12 @@ try {
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $output = "";
 foreach ($result as $record) {
-  $admin = $record['']
+  $role = show_is_admin($record['is_admin']);
   $output .= "
     <tr>
       <td>{$record["username"]}</td>
       <td>{$record["password"]}</td>
+      <td>{$role}</td>
       <td><a href='todo_edit.php?id={$record["id"]}'>edit</a></td>
       <td><a href='todo_delete.php?id={$record["id"]}'>delete</a></td>
     </tr>

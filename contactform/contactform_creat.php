@@ -1,7 +1,7 @@
 <?php
 include('function.php');
 session_start();
-chek_session_id();
+check_session_id();
 // var_dump($_POST);
 // exit();
 
@@ -49,7 +49,7 @@ try {
 // 「dbError:...」が表示されたらdb接続でエラーが発生していることがわかる
 
 // SQL作成&実行
-$sql = 'INSERT INTO Contact_form (id, company_name, Department, industry, use_bim, postal_code, administrative_divisions, address, name, e_mail, TEL, FAX, comment, created_at) VALUES (NULL,:company_name, :Department, :industry, :use_bim, :postal_code, :administrative_divisions, :address, :name, :e_mail, :TEL, :FAX, :comment, now());';
+$sql = 'INSERT INTO Contact_form (id, company_name, Department, industry, use_bim, postal_code, administrative_divisions, address, name, e_mail, TEL, FAX, support,comment, created_at) VALUES (NULL,:company_name, :Department, :industry, :use_bim, :postal_code, :administrative_divisions, :address, :name, :e_mail, :TEL, :FAX, 0,:comment, now());';
 
 $stmt = $pdo->prepare($sql);
 

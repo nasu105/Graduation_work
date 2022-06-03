@@ -4,12 +4,7 @@ include('function.php');
 session_start();
 check_session_id();
 
-// 管理者かどうか判定
-function show_is_admin($number)
-{
-  return (int)$number === 1 ? '管理者' : '一般';
-}
-
+// ユーザー名かどうか判定
 $role = show_is_admin($_SESSION['is_admin']);
 
 ?>
@@ -21,20 +16,24 @@ $role = show_is_admin($_SESSION['is_admin']);
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>録音</title>
+  <title>つぶやき</title>
 </head>
 
 <body>
   <div>ようこそ<?= "{$_SESSION['username']}({$role})" ?>さん</div>
-  <div>
-    <h1>もう手書きのメモなんて必要ない</h1>
-    <p>追加コンテン乞うご期待</p>
-  </div>
+  <form action="tweet_creat.php" method="POST">
+    つぶやき: <br>
+    <textarea name="tweet" id="" cols="20" rows="10" placeholder='140字以内でお願いします' maxlength="140"></textarea>
+    <p id="count">あと<span id="num"></span>文字</p>
+    <button>送信</button>
+  </form>
   <div>
     <!-- <a href="login.php" type="hidden">Top</a> -->
+    <a href="tweet_read.php">つぶやき一覧</a>
     <a href="logout.php">Log out</a>
   </div>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="content.js"></script>
 </body>
 
 </html>

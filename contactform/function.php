@@ -36,12 +36,12 @@ function check_session_id() {
   }
 }
 
-/* // 管理者か判明
+// 管理者か判明
 function show_is_admin($number)
 {
   return (int)$number === 1 ? '管理者' : '一般';
 }
-// $role = show_is_admin($_SESSION['is_admin']); // $roleで管理者or一般で分けれる */
+// $role = show_is_admin($_SESSION['is_admin']); // $roleで管理者or一般で分けれる
 
 
 // 都道府県変換

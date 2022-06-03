@@ -45,6 +45,7 @@ if (!$val) {
   // ユーザIDで入った時
 } else  if ($val && $val['is_admin'] == 0){
   $_SESSION = array();
+  $_SESSION['user_id'] = $val['id'];
   $_SESSION['session_id'] = session_id();
   $_SESSION['is_admin'] = $val['is_admin'];
   $_SESSION['username'] = $val['username'];
